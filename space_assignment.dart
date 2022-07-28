@@ -1,11 +1,13 @@
 import "dart:math";
 
 abstract class SpaceShip{
-  int health = 100;
-  int firePower = 10;
+  int health;
+  int firePower;
   
-  void hit();
+  void hit(int atk);
   void isDestroyed();
+
+  SpaceShip(this.health, this.firePower);
 }
 
 class ArmoredSpaceShip extends SpaceShip {
@@ -14,10 +16,10 @@ class ArmoredSpaceShip extends SpaceShip {
   final rndmArmorPower = Random().nextInt(40);
 
   @override
-  void hit(){
+  void hit(int atk){
     
     int damage;
-    damage = firePower - rndmArmorPower;
+    damage = atk - rndmArmorPower;
     health = health - damage.toInt();
     
   }
@@ -26,19 +28,20 @@ class ArmoredSpaceShip extends SpaceShip {
     print('Spaceship 1 is down! ');
   }
   
+  ArmoredSpaceShip(health,firePower): super(health,firePower);
 }
 
 // HighSpeed SpaceShip Class
 class HighSpeedSpaceShip extends SpaceShip {
   @override
-  void hit() {
+  void hit(int atk) {
     bool dodging = Random().nextBool();
 
     if (dodging == true){
       health = health + 0;
     }
     else{
-      health = health - firePower;
+      health = health - atk;
     }
   }
 
@@ -46,31 +49,50 @@ class HighSpeedSpaceShip extends SpaceShip {
   void isDestroyed(){
     print("Spaceship 2 is down!");
   }
+
+  HighSpeedSpaceShip(health,firePower): super(health,firePower);
 }
 
 
 class Battlefield{
   void startBattle(SpaceShip sp1, SpaceShip sp2){
-   
-
+  bool whoStart = Random().nextBool();
+  if (whoStart){
     do {
-      sp1.hit();
+      sp1.hit(sp2.firePower);
       print("SP1 is hit \n  health: ${sp1.health} ");
-      sp2.hit();     
-      print("SP2 is hit \n  health: ${sp1.health} ");      
+      sp2.hit(sp1.firePower);     
+      print("SP2 is hit \n  health: ${sp2.health} ");      
     }while (sp1.health > 0 && sp2.health >0);
 
   if (sp1.health <= 0){
-  ArmoredSpaceShip().isDestroyed();
+  sp1.isDestroyed();
   }
   else if (sp2.health <=0){
-  HighSpeedSpaceShip().isDestroyed();
+  sp2.isDestroyed();
   }
+  }else{
+    do {
+      sp2.hit(sp1.firePower);
+      print("SP2 is hit \n  health: ${sp2.health} ");
+      sp1.hit(sp2.firePower);     
+      print("SP1 is hit \n  health: ${sp1.health} ");      
+    }while (sp1.health > 0 && sp2.health >0);
+
+  if (sp1.health <= 0){
+  sp1.isDestroyed();
+  }
+  else if (sp2.health <=0){
+  sp2.isDestroyed();
+  }
+  }
+
+    
   }
 }
 
 void main(){
-  ArmoredSpaceShip sp1 = ArmoredSpaceShip();
-  HighSpeedSpaceShip sp2 = HighSpeedSpaceShip();
+  SpaceShip sp1 = ArmoredSpaceShip(1000, 100);
+  SpaceShip sp2 = HighSpeedSpaceShip(1000, 100);
   Battlefield().startBattle(sp1, sp2);
 }
