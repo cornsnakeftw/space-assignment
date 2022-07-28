@@ -1,89 +1,76 @@
 import "dart:math";
 
-void main() async {
+abstract class SpaceShip{
+  int health = 100;
+  int firePower = 10;
+  
+  void hit();
+  void isDestroyed();
+}
+
+class ArmoredSpaceShip extends SpaceShip {
+  
+  
+  final rndmArmorPower = Random().nextInt(40);
+
+  @override
+  void hit(){
+    
+    int damage;
+    damage = firePower - rndmArmorPower;
+    health = health - damage.toInt();
+    
+  }
+  @override
+  void isDestroyed(){
+    print('Spaceship 1 is down! ');
+  }
   
 }
-abstract class SpaceShip{
 
-  SpaceShip({this.health, this.firepower});
+// HighSpeed SpaceShip Class
+class HighSpeedSpaceShip extends SpaceShip {
+  @override
+  void hit() {
+    bool dodging = Random().nextBool();
 
-  int health;
-  int firePower;
-
-  void hit(SpaceShip spaceShip){
-      spaceShip.minushealth(firepower);
+    if (dodging == true){
+      health = health - 0;
+    }
+    else{
+      health = health - firePower;
+    }
   }
 
-  void minushealth(int firepower){
-    bool isDestroyed(){
-    health <= 0;
-
-    if (isDestroyed){
-      print('defeated');
-    }
-     }
-  void isDestroyed();
-  //Methods
-  //hit
-  //isDestroyed
-
-
+  @override 
+  void isDestroyed(){
+    print("Spaceship 2 is down!");
+  }
 }
 
 
 class Battlefield{
-  void starBattle(SpaceShip sp1, SpaceShip sp2){
-    int sp1 = 1;
-    int sp2 = 2;
+  void startBattle(SpaceShip sp1, SpaceShip sp2){
+   
 
+    do {
+      sp1.hit();
+      print("SP1 is hit \n  health: ${sp1.health} ");
+      sp2.hit();     
+      print("SP2 is hit \n  health: ${sp1.health} ");      
+    }while (sp1.health > 0 && sp2.health >0);
 
-    var rndm = Random().nextInt(sp2)+sp1;
-    //Randomly a space ship is selected to hit first
-    //SpaceShips hit each other
-    //Until one of them is destroyed--
-    hit(){
-      
-    }
-    isDestroyed(){
-
-    }
+  if (sp1.health <= 0){
+  ArmoredSpaceShip().isDestroyed();
+  }
+  else if (sp2.health <=0){
+  HighSpeedSpaceShip().isDestroyed();
+  }
   }
 }
 
-class ArmoredSpaceShip extends SpaceShip{
-  //Randomly absorbs hit
-  ArmoredSpaceShip({
-    int health,
-    int firepower,
-    
-  })
-  double maxArmorPower;
-  @override
-  void hit(){
-    var randomHit = new Random();
-    int randomInt = randomHit.nextInt(40);
-    double maxArmorePower = randomHit.nextDouble() * randomHit;
-    
-  }
-  @override
-  void isDestroyed(){
-    SpaceShip.health = 0;
-  }
-
-}
-
-class HighSpeedSpaceShip extends SpaceShip{
-  //Wether dodges hit or not
-  bool dodging;
-  if (doging == 1){
-    health = 
-  }
-
-  void hit(){
-
-  }
-
-  void isDestroyed(){
-
-  }
+void main(){
+  ArmoredSpaceShip sp1 = ArmoredSpaceShip();
+  HighSpeedSpaceShip sp2 = HighSpeedSpaceShip();
+  Battlefield().startBattle(sp1, sp2);
 }
