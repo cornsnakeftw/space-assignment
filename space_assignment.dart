@@ -35,7 +35,7 @@ class HighSpeedSpaceShip extends SpaceShip {
     bool dodging = Random().nextBool();
 
     if (dodging == true){
-      health = health - 0;
+      health = health + 0;
     }
     else{
       health = health - firePower;
