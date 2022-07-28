@@ -66,12 +66,13 @@ class Battlefield{
     }while (sp1.health > 0 && sp2.health >0);
 
   if (sp1.health <= 0){
-  sp1.isDestroyed();
+    sp1.isDestroyed();
   }
   else if (sp2.health <=0){
-  sp2.isDestroyed();
+    sp2.isDestroyed();
   }
-  }else{
+  }
+  else{
     do {
       sp2.hit(sp1.firePower);
       print("SP2 is hit \n  health: ${sp2.health} ");
@@ -86,8 +87,6 @@ class Battlefield{
   sp2.isDestroyed();
   }
   }
-
-    
   }
 }
 
